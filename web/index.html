@@ -1,0 +1,31 @@
+<html>
+<head>
+	<title></title>
+</head>
+<body>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+
+	<script>
+
+	  var socket;
+
+	  $(document).ready( function() {
+
+		    socket = io();
+
+	      socket.on('getuser', function(){
+
+					//socket.emit("ident", '{"name":"franc", "time":"5000" }' );
+
+	      });
+
+	  });
+
+	</script>
+
+	<div id="msg"></div>
+
+</body>
+</html>

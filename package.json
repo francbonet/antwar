@@ -3,6 +3,11 @@
   "version": "1.0.0",
   "description": "strategy game",
   "main": "index.js",
+  "dependencies": {
+    "express": "^4.15.3",
+    "node-schedule": "^1.2.3",
+    "socket.io": "^2.0.1"
+  },  
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

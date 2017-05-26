@@ -2,6 +2,24 @@
 <head>
 	<title></title>
 </head>
+
+<style>
+
+	#stats {
+		position: absolute;
+		top: 5px;
+		right: 5px;
+		width: 75px;
+		height: auto;
+		background-color: #ccc;
+		font-size: 15px;
+		font-family: Arial;
+		text-align: right;
+		padding: 2px;
+	}
+
+</style>
+
 <body>
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
@@ -16,16 +34,18 @@
 		    socket = io();
 
 	      socket.on('getuser', function(){
-
-					//socket.emit("ident", '{"name":"franc", "time":"5000" }' );
-
+					socket.emit("setuser", '{"name":"franc", "id":"00001" }' );
 	      });
+
+				socket.on('updateData', function(){
+					console.log("Update Data");
+				});
 
 	  });
 
 	</script>
 
-	<div id="msg"></div>
+	<div id="stats">0</div>
 
 </body>
 </html>

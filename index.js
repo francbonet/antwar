@@ -5,7 +5,6 @@ var Servidor = require('./lib/server');
 
 
 /*Init server http port 3000 */
-/*Nose*/ 
-
 var servidor = new Servidor();
-servidor.arrancar(  __dirname );
+var root_path = __dirname;
+servidor.arrancar( root_path );

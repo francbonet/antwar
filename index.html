@@ -1,0 +1,75 @@
+<html>
+<head>
+	<title></title>
+</head>
+
+<body>
+
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+
+	<script>
+
+	  var socket;
+
+	  $(document).ready( function() {
+
+		    socket = io();
+
+				var spinner1 = $( "#spinner" ).spinner();
+				var spinner2 = $( "#spinner2" ).spinner();
+
+				$("#createWorkers").click( function() {
+
+					 var value = spinner1.spinner( "value" );
+					 socket.emit("setworkers", '{"name":"franc", "id":"00001" , "workers":'+ value +' }' );
+
+				});
+
+				$("#createWarriors").click( function() {
+
+					var value = spinner2.spinner( "value" );
+					socket.emit("setwarriors", '{"name":"franc", "id":"00001" , "warriors":'+ value +' }' );
+
+				});
+
+	      socket.on('getuser', function(){
+
+					socket.emit("setuser", '{"name":"franc", "id":"00001" }' );
+
+	      });
+
+				socket.on('updateData', function( _json ){
+
+					var dataUser = JSON.parse( _json );
+					$("#food").html( "food:" + dataUser.food );
+					$("#workers").html( "workers:" + dataUser.workers );
+					$("#warriors").html( "warriors:" + dataUser.warriors );
+					$("#que").html( "que:" + Math.round( dataUser.que ) );
+					console.log( dataUser.que );
+
+				});
+
+	  });
+
+	</script>
+
+	<div id="stats">
+		<div id="food">food:0</div>
+		<div id="workers">workers:0</div>
+		<div id="warriors">warriors:0</div>
+		<div id="que">que:0</div>
+	</div>
+	<div id="unidades">
+  	<input id="spinner" name="value">
+		<button id="createWorkers" class="ui-button ui-widget ui-corner-all">Creare Workers</button>
+		<br/><br/>
+		<input id="spinner2" name="value">
+		<button id="createWarriors" class="ui-button ui-widget ui-corner-all">Creare Warriors</button>
+	</div>
+
+</body>
+</html>

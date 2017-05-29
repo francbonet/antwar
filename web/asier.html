@@ -3,29 +3,13 @@
 	<title></title>
 </head>
 
-<style>
-
-	#stats {
-
-		position: absolute;
-		top: 5px;
-		right: 5px;
-		width: 75px;
-		height: auto;
-		background-color: #ccc;
-		font-size: 15px;
-		font-family: Arial;
-		text-align: right;
-		padding: 2px;
-
-	}
-
-</style>
-
 <body>
 
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.0.1/socket.io.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+	<link rel="stylesheet" href="css/main.css">
+	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
 	<script>
 
@@ -35,15 +19,26 @@
 
 		    socket = io();
 
+				var spinner = $( "#spinner" ).spinner();
+				$("#createUnits").click( function() {
+
+					 //alert( spinner.spinner( "value" ) );
+					 var value = spinner.spinner( "value" );
+					 socket.emit("setworkers", '{"name":"asier", "id":"00002" , "workers":'+ value +' }' );
+
+				});
+
 	      socket.on('getuser', function(){
+
 					socket.emit("setuser", '{"name":"asier", "id":"00002" }' );
+
 	      });
 
 				socket.on('updateData', function( _json ){
 
 					var dataUser = JSON.parse( _json );
-					console.log("Update Data:" + dataUser.points );
-					$("#stats").html( "food:" + dataUser.points );
+					$("#food").html( "food:" + dataUser.food );
+					$("#workers").html( "workers:" + dataUser.workers );
 
 				});
 
@@ -51,7 +46,14 @@
 
 	</script>
 
-	<div id="stats">food:0</div>
+	<div id="stats">
+		<div id="food">food:0</div>
+		<div id="workers">workers:0</div>
+	</div>
+	<div id="unidades">
+  	<input id="spinner" name="value">
+		<button id="createUnits" class="ui-button ui-widget ui-corner-all">Creare Workers</button>
+	</div>
 
 </body>
 </html>

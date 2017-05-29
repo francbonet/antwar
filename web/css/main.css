@@ -1,0 +1,22 @@
+html, body {
+  font-size: 16px !important;
+}
+
+div {
+  margin-bottom: 10px;
+}
+
+#stats {
+
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  width: auto;
+  height: auto;
+  background-color: #ccc;
+  font-size: 15px;
+  font-family: Arial;
+  text-align: right;
+  padding: 5px;
+
+}

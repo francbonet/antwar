@@ -6,6 +6,15 @@ div {
   margin-bottom: 10px;
 }
 
+input {
+    width: 40px;
+}
+
+#que {
+  background-color: yellow;
+  padding: 4px;
+}
+
 #stats {
 
   position: absolute;

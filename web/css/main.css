@@ -15,6 +15,24 @@ input {
   padding: 4px;
 }
 
+#attacks {
+  background-color: red;
+  padding: 4px;
+}
+
+#attack {
+
+  position: absolute;
+  bottom: 0px;
+  left: 0px;
+
+}
+
+select {
+    font-size: 20px;
+}
+
+
 #stats {
 
   position: absolute;

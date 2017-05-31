@@ -11,6 +11,7 @@
 	<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
 	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 
+
 	<script>
 
 	  var socket;
@@ -19,26 +20,48 @@
 
 		    socket = io();
 
+				var name = "franc";
+				var id = "0001";
+
 				var spinner1 = $( "#spinner" ).spinner();
+				spinner1.spinner( "value", 0 );
+				spinner1.spinner( 'option', 'min', 0 );
+
 				var spinner2 = $( "#spinner2" ).spinner();
+				spinner2.spinner( "value", 0 );
+				spinner2.spinner( 'option', 'min', 0 );
+
+				var spinner3 = $( "#spinner3" ).spinner();
+				spinner3.spinner( "value", 0 );
+				spinner3.spinner( 'option', 'min', 0 );
 
 				$("#createWorkers").click( function() {
 
 					 var value = spinner1.spinner( "value" );
-					 socket.emit("setworkers", '{"name":"franc", "id":"00001" , "workers":'+ value +' }' );
+					 socket.emit("setworkers", '{"name":"'+name+'" , "id":"'+id+'" , "workers":'+ value +' }' );
+					 spinner1.spinner( "value", 0 );
 
 				});
 
 				$("#createWarriors").click( function() {
 
 					var value = spinner2.spinner( "value" );
-					socket.emit("setwarriors", '{"name":"franc", "id":"00001" , "warriors":'+ value +' }' );
+					socket.emit("setwarriors", '{"name":"'+name+'", "id":"'+id+'" , "warriors":'+ value +' }' );
+					spinner2.spinner( "value", 0 );
+
+				});
+
+				$("#sendWarriors").click( function() {
+
+					var value = spinner3.spinner("value");
+					var to_user = $("#Users option:selected").text();
+					socket.emit( "setattack", '{"form_user":"'+ name +'", "to_user":"'+ to_user +'" , "warriors":'+ value +' }' );
 
 				});
 
 	      socket.on('getuser', function(){
 
-					socket.emit("setuser", '{"name":"franc", "id":"00001" }' );
+					socket.emit("setuser", '{"name":"'+name+'", "id":"'+id+'" }' );
 
 	      });
 
@@ -48,8 +71,41 @@
 					$("#food").html( "food:" + dataUser.food );
 					$("#workers").html( "workers:" + dataUser.workers );
 					$("#warriors").html( "warriors:" + dataUser.warriors );
-					$("#que").html( "que:" + Math.round( dataUser.que ) );
-					console.log( dataUser.que );
+
+					var ques = dataUser.que;
+					var text = "";
+					for( i=0 ; i< ques.length ; i++  )
+					{
+							var st = "unidad:<b>" + ques[i].type +"</b> num:<b>" + ques[i].num + "</b> falta:<b>" + Math.round( ques[i].left ) +"s</b>" ;
+							text = text + st + "<br/>";
+					}
+					$("#que").html( text );
+
+
+					var ques = dataUser.attacks;
+					var text = "";
+					for( i=0 ; i< ques.length ; i++  )
+					{
+							var st = ques[i].type + ": <b>" + ques[i].warriors + "</b> warriors </b> falta:<b>" + Math.round( ques[i].left ) +"s</b>";
+							text = text + st + "<br/>";
+					}
+					$("#attacks").html( text );
+
+
+					//Attack
+					$("#sendWarriors").text("/ "+ dataUser.warriors +" -> Warriors Attack");
+
+					//Max
+					spinner3.spinner('option', 'max', dataUser.warriors );
+					spinner2.spinner('option', 'max', dataUser.food/2 );
+					spinner1.spinner('option', 'max', dataUser.food );
+
+				});
+
+				socket.on('onError', function( _json ){
+
+						var dataError = JSON.parse( _json );
+						alert( dataError.text );
 
 				});
 
@@ -61,14 +117,28 @@
 		<div id="food">food:0</div>
 		<div id="workers">workers:0</div>
 		<div id="warriors">warriors:0</div>
-		<div id="que">que:0</div>
+		<div id="que"></div>
+		<div id="attacks"></div>
 	</div>
+
 	<div id="unidades">
   	<input id="spinner" name="value">
-		<button id="createWorkers" class="ui-button ui-widget ui-corner-all">Creare Workers</button>
+		<button id="createWorkers" class="ui-button ui-widget ui-corner-all">Creare Workers 1x1 food</button>
 		<br/><br/>
 		<input id="spinner2" name="value">
-		<button id="createWarriors" class="ui-button ui-widget ui-corner-all">Creare Warriors</button>
+		<button id="createWarriors" class="ui-button ui-widget ui-corner-all">Creare Warriors 1x2 food</button>
+	</div>
+
+	<div id="attack">
+		<input id="spinner3" name="value">
+		<button id="sendWarriors" class="ui-button ui-widget ui-corner-all">Warriors Attack</button>
+
+		<select id="Users">
+			<option>franc</option>
+		  <option>asier</option>
+		  <option>jaume</option>
+		</select>
+
 	</div>
 
 </body>

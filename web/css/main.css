@@ -20,6 +20,12 @@ input {
   padding: 4px;
 }
 
+#userName  {
+
+  font-weight: bold;
+  font-size: 20px;
+}
+
 #attack {
 
   position: absolute;

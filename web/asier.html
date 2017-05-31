@@ -23,6 +23,8 @@
 				var name = "asier";
 				var id = "0002";
 
+				$("#userName").text( name  );
+
 				var spinner1 = $( "#spinner" ).spinner();
 				spinner1.spinner( "value", 0 );
 				spinner1.spinner( 'option', 'min', 0 );
@@ -38,16 +40,22 @@
 				$("#createWorkers").click( function() {
 
 					 var value = spinner1.spinner( "value" );
-					 socket.emit("setworkers", '{"name":"'+name+'" , "id":"'+id+'" , "workers":'+ value +' }' );
-					 spinner1.spinner( "value", 0 );
+					 if(value>0)
+					 {
+						 socket.emit("setworkers", '{"name":"'+name+'" , "id":"'+id+'" , "workers":'+ value +' }' );
+						 spinner1.spinner( "value", 0 );
+					 }
 
 				});
 
 				$("#createWarriors").click( function() {
 
 					var value = spinner2.spinner( "value" );
-					socket.emit("setwarriors", '{"name":"'+name+'", "id":"'+id+'" , "warriors":'+ value +' }' );
-					spinner2.spinner( "value", 0 );
+					if(value>0)
+					{
+						socket.emit("setwarriors", '{"name":"'+name+'", "id":"'+id+'" , "warriors":'+ value +' }' );
+						spinner2.spinner( "value", 0 );
+					}
 
 				});
 
@@ -68,9 +76,10 @@
 				socket.on('updateData', function( _json ){
 
 					var dataUser = JSON.parse( _json );
-					$("#food").html( "food:" + dataUser.food );
-					$("#workers").html( "workers:" + dataUser.workers );
-					$("#warriors").html( "warriors:" + dataUser.warriors );
+					$("#food").html( "<b>food:</b>" + dataUser.food );
+					$("#workers").html( "<b>workers:</b>" + dataUser.workers );
+					$("#warriors").html( "<b>warriors:</b>" + dataUser.warriors );
+					$("#poblacion").html("<b>"+ dataUser.population +"/"+ dataUser.Maxpopulation +"</b>");
 
 					var ques = dataUser.que;
 					var text = "";
@@ -84,11 +93,16 @@
 
 					var ques = dataUser.attacks;
 					var text = "";
+
 					for( i=0 ; i< ques.length ; i++  )
 					{
-							var st = ques[i].type + ": <b>" + ques[i].warriors + "</b> warriors </b> falta:<b>" + Math.round( ques[i].left ) +"s</b>";
-							text = text + st + "<br/>";
+							if( ques[i].type != 'Ocultar')
+							{
+								var st = "From:<b>"+ ques[i].from + "</b> to:<b>" +ques[i].to + "<b/> " + ques[i].type + ": <b>" + ques[i].warriors + "</b> warriors </b> falta:<b>" + Math.round( ques[i].left ) +"s</b>";
+								text = text + st + "<br/>";
+							}
 					}
+
 					$("#attacks").html( text );
 
 
@@ -96,9 +110,9 @@
 					$("#sendWarriors").text("/ "+ dataUser.warriors +" -> Warriors Attack");
 
 					//Max
-					spinner3.spinner('option', 'max', dataUser.warriors );
-					spinner2.spinner('option', 'max', dataUser.food/2 );
-					spinner1.spinner('option', 'max', dataUser.food );
+					spinner3.spinner('option', 'max', Math.round( dataUser.warriors ) );
+					spinner2.spinner('option', 'max', Math.round( (dataUser.food-1)/2 ) );
+					spinner1.spinner('option', 'max', Math.round( (dataUser.food-1) ) );
 
 				});
 
@@ -109,14 +123,24 @@
 
 				});
 
+				socket.on('onInforme', function( _json ){
+
+						var dataError = JSON.parse( _json );
+						alert( dataError.text );
+
+				});
+
 	  });
 
 	</script>
 
+
 	<div id="stats">
-		<div id="food">food:0</div>
-		<div id="workers">workers:0</div>
-		<div id="warriors">warriors:0</div>
+		<div id="userName"></div>
+		<div id="poblacion"><b>0/50</b></div>
+		<div id="food"><b>food:</b>0</div>
+		<div id="workers"><b>workers:</b>0</div>
+		<div id="warriors"><b>warriors:</b>0</div>
 		<div id="que"></div>
 		<div id="attacks"></div>
 	</div>

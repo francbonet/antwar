@@ -76,7 +76,7 @@
 				socket.on('updateData', function( _json ){
 
 					var dataUser = JSON.parse( _json );
-					$("#food").html( "<b>food:</b>" + dataUser.food );
+					$("#food").html( "<b>food:</b>" + dataUser.food + "/100" );
 					$("#workers").html( "<b>workers:</b>" + dataUser.workers );
 					$("#warriors").html( "<b>warriors:</b>" + dataUser.warriors );
 					$("#poblacion").html("<b>"+ dataUser.population +"/"+ dataUser.Maxpopulation +"</b>");
@@ -113,6 +113,25 @@
 					spinner3.spinner('option', 'max', Math.round( dataUser.warriors ) );
 					spinner2.spinner('option', 'max', Math.round( (dataUser.food-1)/2 ) );
 					spinner1.spinner('option', 'max', Math.round( (dataUser.food-1) ) );
+
+					//Informes
+
+
+					var result_info = "<ul>";
+
+					var inform = dataUser.informes;
+					console.log( "informes:" + inform.length );
+
+					inform.reverse();
+
+					for( i=0 ; i< inform.length ; i++ )
+					{
+							result_info = result_info + "<li>" + inform[i].text + "</lis>";
+							console.log( inform[i].text );
+					}
+
+					$("#informes").html( result_info + "</ul>");
+
 
 				});
 
@@ -162,7 +181,9 @@
 		  <option>asier</option>
 		  <option>jaume</option>
 		</select>
+	</div>
 
+	<div id="informes">
 	</div>
 
 </body>

@@ -64,7 +64,8 @@
 					var value = spinner3.spinner("value");
 					var to_user = $("#Users option:selected").text();
 					socket.emit( "setattack", '{"form_user":"'+ name +'", "to_user":"'+ to_user +'" , "warriors":'+ value +' }' );
-
+					spinner3.spinner( "value", 0 );
+					
 				});
 
 	      socket.on('getuser', function(){
